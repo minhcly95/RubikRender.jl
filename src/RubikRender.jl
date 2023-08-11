@@ -1,5 +1,11 @@
 module RubikRender
 
-# Write your package code here.
+using RubikCore
+using WGLMakie, Colors, GeometryBasics
+
+include("colors.jl")
+include("render.jl")
+
+export render
 
 end
