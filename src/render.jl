@@ -3,6 +3,7 @@ function render(cube::Cube; resolution=(400, 400), background="gray")
     WGLMakie.cam3d!(scene)
 
     invcube = cube'
+    mirrored = is_mirrored(cube)
 
     for (i, f) in enumerate(RubikCore.rotate.(ALL_FACES, (invcube.center,)))
         _add_center_cubie!(scene, i, f)
@@ -13,7 +14,7 @@ function render(cube::Cube; resolution=(400, 400), background="gray")
     end
 
     for (i, c) in enumerate(invcube.corners)
-        _add_corner_cubie!(scene, i, c)
+        _add_corner_cubie!(scene, i, c, mirrored)
     end
 
     WGLMakie.scale!(scene, Vec3f(0.6))
@@ -95,7 +96,7 @@ function _add_center_cubie!(scene, i, f)
 end
 
 function _add_edge_cubie!(scene, i, e)
-    str = RubikCore._EDGE_STRS[Int(e)]
+    str = slot_string(e)
     texture = _make_cubie_texture(Face.(collect(str))...)
     cubie = WGLMakie.mesh!(scene, _CUBIE_MESH, color=texture)
     WGLMakie.rotate!(cubie, _EDGE_ROTATIONS[i])
@@ -103,8 +104,8 @@ function _add_edge_cubie!(scene, i, e)
     return cubie
 end
 
-function _add_corner_cubie!(scene, i, c)
-    str = RubikCore._CORNER_STRS[Int(c)]
+function _add_corner_cubie!(scene, i, c, mirrored=false)
+    str = slot_string(mirrored ? RubikCore.ori_neg(c) : c, mirrored)
     texture = _make_cubie_texture(Face.(collect(str))...)
     cubie = WGLMakie.mesh!(scene, _CUBIE_MESH, color=texture)
     WGLMakie.rotate!(cubie, _CORNER_ROTATIONS[i])
