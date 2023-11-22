@@ -12,7 +12,7 @@ WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
 [compat]
 Colors = "0.12"
 GeometryBasics = "0.4"
-WGLMakie = "0.8"
+WGLMakie = "0.8, 0.9"
 julia = "1.6"
 
 [extras]
